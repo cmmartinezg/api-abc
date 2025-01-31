@@ -4,7 +4,7 @@ const router = express.Router();
 
 const API_KEY = process.env.API_KEY || '123456';
 
-// Middleware para validar API Key
+
 router.use((req, res, next) => {
     const apiKey = req.headers['x-api-key'];
     if (!apiKey) {
@@ -18,7 +18,7 @@ router.get('/ultimas-noticias', async (req, res) => {
     const { bono } = req.query;
 
     try {
-        console.log(`🔍 Buscando noticias en /ultimas-noticias/`);
+        console.log(`Buscando noticias en /ultimas-noticias/`);
 
         const url = `https://www.abc.com.py/ultimas-noticias/`;
         const browser = await puppeteer.launch({
@@ -34,15 +34,15 @@ router.get('/ultimas-noticias', async (req, res) => {
 
         await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
 
-        // 📸 Captura de pantalla para verificar el contenido
+        //  Captura de pantalla para verificar el contenido
         await page.screenshot({ path: 'screenshot.png', fullPage: true });
-        console.log('📸 Captura de pantalla guardada como screenshot.png');
+        console.log('Captura de pantalla guardada como screenshot.png');
 
-        // 🔍 Ver el HTML cargado
+        //  Ver el HTML cargado
         const pageHTML = await page.evaluate(() => document.body.innerHTML);
         console.log("🔍 HTML capturado:\n", pageHTML.substring(0, 2000));
 
-        // ⚠️ CAMBIA ESTE SELECTOR SI NO FUNCIONA
+        //  CAMBIA ESTE SELECTOR SI NO FUNCIONA
         const noticiaSelector = '.article'; // Encuentra el selector correcto
 
         try {
@@ -64,10 +64,10 @@ router.get('/ultimas-noticias', async (req, res) => {
             }));
         }, noticiaSelector);
 
-        console.log("📌 Noticias encontradas:");
+        console.log("Noticias encontradas:");
         noticias.forEach(noticia => console.log(noticia.titulo));
 
-        // Procesar imágenes en base64 si se solicita el BONO
+        // Procesar imágenes en base64 
         if (bono === 'true') {
             for (let noticia of noticias) {
                 if (noticia.enlace_foto) {
@@ -91,7 +91,7 @@ router.get('/ultimas-noticias', async (req, res) => {
 
         res.status(200).json(noticias);
     } catch (error) {
-        console.error('❌ Error en scraping:', error);
+        console.error('Error en scraping:', error);
         res.status(500).json({ codigo: "e100", error: "Error interno del servidor" });
     }
 });

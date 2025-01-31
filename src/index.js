@@ -16,16 +16,16 @@ router.use((req, res, next) => {
 });
 
 
-// Ruta para obtener noticias desde /ultimas-noticias/
+
 router.get('/ultimas-noticias', async (req, res) => {
     const { bono } = req.query;
 
     try {
-        console.log(`🔍 Buscando noticias en /ultimas-noticias/`);
+        console.log(` Buscando noticias en /ultimas-noticias/`);
 
         const url = `https://www.abc.com.py/ultimas-noticias/`;
         const browser = await puppeteer.launch({
-            headless: false, // ⚠️ Cambia a `false` para ver la página en tiempo real
+            headless: false, 
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
 
@@ -37,15 +37,15 @@ router.get('/ultimas-noticias', async (req, res) => {
 
         await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
 
-        // 📸 Captura de pantalla para verificar el contenido
+        //  Captura de pantalla para verificar el contenido
         await page.screenshot({ path: 'screenshot.png', fullPage: true });
         console.log('📸 Captura de pantalla guardada como screenshot.png');
 
-        // 🔍 Ver el HTML cargado
+        //  Ver el HTML cargado
         const pageHTML = await page.evaluate(() => document.body.innerHTML);
         console.log("🔍 HTML capturado:\n", pageHTML.substring(0, 2000));
 
-        // ⚠️ Ajustar el selector si es necesario
+        //  Ajustar el selector si es necesario
         const noticiaSelector = '.article'; 
 
         try {
@@ -70,7 +70,7 @@ router.get('/ultimas-noticias', async (req, res) => {
         console.log("📌 Noticias encontradas:");
         noticias.forEach(noticia => console.log(noticia.titulo));
 
-        // Procesar imágenes en base64 si se solicita el BONO
+        // Procesar imágenes en base64
         if (bono === 'true') {
             for (let noticia of noticias) {
                 if (noticia.enlace_foto) {
