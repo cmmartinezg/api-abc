@@ -1,0 +1,58 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "API de Noticias",
+      "description": "API para extraer noticias de ABC Color"
+    },
+    "host": "localhost:3000",
+    "basePath": "/api",
+    "schemes": ["http"],
+    "paths": {
+      "/ultimas-noticias": {
+        "get": {
+          "summary": "Obtener las últimas noticias",
+          "description": "Extrae las últimas noticias de ABC Color",
+          "parameters": [
+            {
+              "name": "bono",
+              "in": "query",
+              "required": false,
+              "type": "boolean",
+              "description": "Si es 'true', devuelve las imágenes en base64"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de noticias",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Noticia"
+                }
+              }
+            },
+            "404": {
+              "description": "No se encontraron noticias"
+            },
+            "500": {
+              "description": "Error interno del servidor"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Noticia": {
+        "type": "object",
+        "properties": {
+          "fecha": { "type": "string" },
+          "enlace": { "type": "string" },
+          "titulo": { "type": "string" },
+          "resumen": { "type": "string" },
+          "enlace_foto": { "type": "string" }
+        }
+      }
+    }
+  }
+  
