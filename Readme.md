@@ -1,4 +1,7 @@
 /*
+primeramente realizar npm install, para el buen funcionamiento
+
+
 //primer comando
 //node src/index.js
 //segundo comando
